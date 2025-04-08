@@ -10,7 +10,7 @@ const DeleteProfile = () => {
   const handleDelete = async () => {
     try {
       const token = localStorage.getItem('access_token');
-      const response = await api.delete('/auth/profile/delete', {
+      await api.delete('/auth/profile/delete', {
         headers: {
           Authorization: `Bearer ${token}`
         }
