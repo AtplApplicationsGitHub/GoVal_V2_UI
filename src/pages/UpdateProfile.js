@@ -6,21 +6,31 @@ import './Auth.css';
 const UpdateProfile = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('access_token');
+      if (!token) {
+        alert('No access token found. Please log in.');
+        navigate('/login');
+        return;
+      }
       const response = await api.put('/auth/profile/update', { email, password }, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
-      alert(response.data.message);
-      navigate('/hi');
+      setSuccessMessage('Updated Successfully');
+      setEmail(''); // Clear the email field
+      setPassword(''); // Clear the password field
+      setTimeout(() => {
+        navigate('/hi');
+      }, 2000); // Redirect after 2 seconds
     } catch (error) {
-      alert(error.response.data.message);
+      alert(error.response?.data?.message || 'An error occurred');
     }
   };
 
@@ -42,6 +52,13 @@ const UpdateProfile = () => {
         />
         <button type="submit">Update</button>
       </form>
+      {successMessage && (
+        <div className="success-message" style={{ color: 'green', marginTop: '10px', textAlign: 'center' }}>
+          {successMessage}
+        </div>
+      )}
+      <br />
+      <button onClick={() => navigate(-1)}>Go Back</button>
     </div>
   );
 };
