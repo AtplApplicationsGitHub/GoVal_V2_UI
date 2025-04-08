@@ -18,7 +18,7 @@ const UpdateProfile = () => {
         navigate('/login');
         return;
       }
-      const response = await api.put('/auth/profile/update', { email, password }, {
+      await api.put('/auth/profile/update', { email, password }, {
         headers: {
           Authorization: `Bearer ${token}`
         }
