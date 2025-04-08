@@ -12,8 +12,9 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await api.post('/auth/login', { email, password });
-      alert(`Access Token: ${response.data.access_token}`);
-      navigate('/hi'); // Navigate to the Hi page
+      const token = response.data.access_token;
+      localStorage.setItem('access_token', token); 
+      navigate('/hi');
     } catch (error) {
       alert(error.response.data.message);
     }
