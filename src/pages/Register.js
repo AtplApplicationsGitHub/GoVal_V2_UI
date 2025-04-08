@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import api from '../api';
+import api from '../api';
 import './Auth.css';
 
 const Register = () => {
@@ -12,7 +12,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // const response = await api.post('/auth/register', { email, password });
+      const response = await api.post('/auth/register', { email, password });
       setSuccessMessage('Registered Successfully');
       setTimeout(() => {
         navigate('/login');
