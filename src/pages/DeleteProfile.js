@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
 import './Auth.css';
 
 const DeleteProfile = () => {
+  const [successMessage, setSuccessMessage] = useState('');
   const navigate = useNavigate();
 
   const handleDelete = async () => {
@@ -14,9 +15,11 @@ const DeleteProfile = () => {
           Authorization: `Bearer ${token}`
         }
       });
-      alert(response.data.message);
-      localStorage.removeItem('access_token'); // Clear the token
-      navigate('/login');
+      setSuccessMessage('Deleted Successfully');
+      localStorage.removeItem('access_token');
+      setTimeout(() => {
+        navigate('/login');
+      }, 2000); // Redirect after 2 seconds
     } catch (error) {
       alert(error.response.data.message);
     }
@@ -26,7 +29,14 @@ const DeleteProfile = () => {
     <div className="auth-container">
       <h2>Delete Profile</h2>
       <button onClick={handleDelete}>Confirm Delete</button>
-    </div>
+      {successMessage && (
+        <div className="success-message" style={{ color: 'green', marginTop: '10px', textAlign: 'center' }}>
+          {successMessage}
+        </div>
+      )}
+      <br/><br/>
+      <button onClick={() => navigate(-1)}>Go Back</button>
+    </div>    
   );
 };
 
